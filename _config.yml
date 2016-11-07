@@ -1,0 +1,16 @@
+title: Recipe Collection
+
+exclude:
+ - Gemfile
+ - Gemfile.lock
+ - s3_website.yml
+ - README.md
+ - bin
+ - vendor
+
+markdown: kramdown
+
+collections:
+  recipes:
+    output: true
+    permalink: /:path/

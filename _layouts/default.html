@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if page.title %}{{ site.title }} :: {{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+    <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+    <link rel="stylesheet" href="/assets/css/main.css">
+  </head>
+  <body>
+    <header>
+      <a href="/" class="title">{{ site.title }}</a>{% if page.title %}<span class="subtitle title"> :: {{ page.title }}</span>{% endif %}
+      {% if page.url == '/index.html' %}
+        <div id="filter">
+          <select id="category"></select>
+          <select id="cuisine"></select>
+        </div>
+      {% endif %}
+    </header>
+    <div class="content">
+      {{ content }}
+    </div>
+  </body>
+</html>

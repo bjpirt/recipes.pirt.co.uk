@@ -1,0 +1,124 @@
+$header-height:70px;
+$header-padding:10px;
+
+$recipe-width: 250px;
+$recipe-height: 180px;
+$recipe-padding: 10px;
+$recipe-margin: 5px;
+
+header{
+  padding: 0;
+  background:#FFF;
+  position:fixed;
+  z-index:1000;
+  width:100%;
+  height:$header-height;
+  vertical-align:top;
+  .title{
+    font-size:200%;
+    display:inline-block;
+    margin:$header-padding 0 $header-padding;
+    margin-left:3*$header-padding;
+  }
+  .subtitle{
+    color:#999;
+    margin-left:10px;
+  }
+  #filter{
+    display:inline-block;
+    text-align:right;
+    float:right;
+    margin:2*$header-padding;
+    select{
+      -webkit-appearance:none;
+      padding:5px;
+      margin:0 5px;
+      font-size:100%;
+    }
+  }
+}
+
+#recipes{
+  text-align:left;
+  padding-top:$header-height + $recipe-margin;
+  padding-left:3*$header-padding - $recipe-margin;
+  .recipe{
+    display:inline-block;
+    width:$recipe-width - $recipe-padding;
+    height:$recipe-height;
+    vertical-align:top;
+    padding:$recipe-padding;
+    margin:$recipe-margin;
+    position:relative;
+    background-size:cover;
+    background-color:#86cad2;
+    
+    &:hover h2{
+      background:black; 
+      color:#FFF;
+    }
+    
+    h2{
+      display:inline;
+      background:$background-color;
+      position:absolute;
+      padding:5px;
+      bottom:0;
+      right:0;
+      max-width:80%;
+      font-size:1.2em;
+      text-align:right;
+    }
+  }
+  .hidden{
+    display:none;
+  }
+}
+
+
+#recipe{
+  position:relative;
+  padding-top:$header-height + $recipe-margin;
+  padding-left:3*$header-padding;
+  padding-right:3*$header-padding;
+    a{
+      text-decoration:underline;
+    }
+}
+
+.ingredients, .method{
+  display:inline-block;
+  vertical-align:top;
+  margin-right:30px;
+  max-width:65%;
+  li{
+    margin-bottom:10px;
+  }
+}
+
+.ingredients{
+  max-width:30%;
+}
+
+.method img{
+  display:block;
+  margin-top:10px;
+}
+
+.main-image{
+  display:block;
+  width:100%;
+  height:300px;
+  background-size:cover;
+  background-position:center center;
+  margin-bottom:3*$header-padding;
+}
+
+.metadata li{
+  p{
+    display:inline;
+  }
+  a{
+    text-decoration:underline;
+  }
+}

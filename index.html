@@ -1,0 +1,124 @@
+---
+layout: default
+---
+
+<div class="home">
+  <div id="recipes">
+    {% for recipe in site.recipes %}
+      {% capture img %}/assets/img{{ recipe.url }}icon.jpg{% endcapture %}{% assign image = false %}{% for static_file in site.static_files %}{% if static_file.path == img %}{% assign image = true %}{% endif %}{% endfor %}<a class="recipe visible" data-cuisine="{{ recipe.cuisine }}" data-category="{{ recipe.category }}" href="{{ recipe.url }}"{% if image %} style="background-image:url('{{ img }}')"{% endif %}><h2>{{ recipe.title }}</h2></a>{% endfor %}
+  </div>
+</div>
+<script>
+var filterTypes = [];
+var filterSelects = document.querySelectorAll('#filter select');
+for(var i=0; i<filterSelects.length;i++){
+  filterTypes.push(filterSelects[i].id);
+}
+var filters = [];
+
+var recipeHidden = function(recipe, f){
+  if(recipe.getAttribute("data-" + f.filter) !== f.value){
+    return true;
+  }
+  return false;
+}
+
+var filterKeys = function(type){
+  var output = [];
+  var recipes = document.querySelectorAll("#recipes .recipe.visible");
+  for(var i = 0; i< recipes.length; i++){
+    if(output.indexOf(recipes[i].getAttribute("data-" + type)) < 0){
+      output.push(recipes[i].getAttribute("data-" + type));
+    }
+  }
+  return output;
+}
+
+var updateFilter = function(f){
+  var keys = filterKeys(f.filter);
+  var sel = document.getElementById(f.filter);
+  sel.options.length = 0;
+  sel.options[0]=new Option("Select " + f.filter + '...', "", true, false)
+  for(var k in keys){
+    sel.options[sel.options.length] = new Option(keys[k], keys[k], true, (keys[k] === f.value));
+  }
+}
+
+var filterRecipes = function(){
+  var toFilter = filterTypes.slice(0);
+  var recipes = document.querySelectorAll("#recipes .recipe");
+  for(var i = 0; i< recipes.length; i++){
+    recipes[i].className = 'recipe visible';
+  }
+  recipes = document.querySelectorAll("#recipes .recipe.visible");
+  for(var j = 0; j< filters.length; j++){
+    // remove the item from the toFilter list
+    toFilter.splice(toFilter.indexOf(filters[j].filter), 1);
+    updateFilter(filters[j]);
+    for(var i = 0; i< recipes.length; i++){
+      if(recipeHidden(recipes[i], filters[j])){
+        recipes[i].className = 'recipe hidden';
+      }else{
+        recipes[i].className = 'recipe visible';
+      }
+    }
+  }
+  for(var f in toFilter){
+    updateFilter({filter:toFilter[f], value:''}); 
+  }
+  setUrl();
+}
+
+var engageFilter = function(id, value){
+  if(value === ''){
+    for(var i=0; i< filters.length; i++){
+      if(filters[i].filter === id){
+        filters.splice(i, 1000);
+      }
+    }
+  }else{
+    var updated = false;
+    for(var i=0; i< filters.length; i++){
+      if(filters[i].filter === id){
+        filters[i].value = value;
+        updated = true;
+      }
+    }
+    if(!updated) filters.push({filter:id, value:value})
+  }
+  for(var i=0; i< filters.length; i++){
+    if(filters[i].filter === id) filters.splice(i+1, 1000);
+  }
+  filterRecipes();
+}
+
+var setupFilter = function(id){
+  document.querySelector("#" + id).onchange = function(e){engageFilter(id, e.target.value);};
+}
+
+var parseUrl = function(){
+  if(window.location.hash.length > 1){
+    var params = window.location.hash.replace('#', '').split('&').map(function(p){
+      var s = p.split('=');
+      engageFilter(s[0], s[1]);
+    });
+  }
+}
+
+var setUrl = function(){
+  var url = [];
+  for(var k in filters){
+    url.push(filters[k].filter + "=" + filters[k].value);
+  }
+  if(url.length === 0){
+    history.replaceState({}, document.title, '/');
+  }else{
+    history.replaceState({}, document.title, '/#' + url.join('&'));
+  }
+}
+
+parseUrl();
+filterRecipes();
+filterTypes.map(setupFilter);
+
+</script>

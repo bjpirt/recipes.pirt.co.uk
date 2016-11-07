@@ -1,0 +1,45 @@
+---
+layout: default
+---
+{% capture img %}/assets/img{{ page.url }}main.jpg{% endcapture %}
+{% for static_file in site.static_files %}
+    {% if static_file.path == img %}
+        {% assign image = true %}
+    {% endif %}
+{% endfor %}
+
+<div id="recipe">
+  {% if image %}
+  <div class="main-image" style="background-image: url('{{ img }}')"></div>
+  {% endif %}
+  
+  <div class="ingredients">
+    <h2>Ingredients</h2>
+    <ul>
+    {% for ingredient in page.ingredients %}
+      <li>{{ ingredient}}</li>
+    {% endfor %}
+    </ul>
+  </div>
+  
+  <div class="method">
+    <h2>Method</h2>
+    <ul>
+    {% for step in page.method %}
+      <li>{{ step | markdownify }}</li>
+    {% endfor %}
+    </ul>
+  </div>
+  
+  {{ content }}
+  
+  <div class="metadata">
+    <h3>Metadata</h3>
+    <ul>
+      <li>Cuisine: {{ page.cuisine }}</li>
+      <li>Cooking type: {{ page.type }}</li>
+      <li>Tags: {{ page.tags | join: ', ' }}</li>
+      <li>Source: {{ page.source | markdownify}}
+    </ul>
+  </div>
+</div>
